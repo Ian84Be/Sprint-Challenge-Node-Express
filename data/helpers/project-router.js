@@ -18,6 +18,8 @@ router.post('/', async (req,res) => {
 });
 
 router.get('/', async (req, res) => {
+    // console.log(req.query.id);
+    // console.log(req.query.actions);
     try {
         const pjs = await Projects.get();
         res.status(200).json(pjs);
@@ -30,6 +32,16 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const pjs = await Projects.get(req.params.id);
+        res.status(200).json(pjs);
+    }
+    catch(err) {
+        res.status(500).json({error:"Failed to get resource."});
+    }
+});
+
+router.get('/:id/actions', async (req, res) => {
+    try {
+        const pjs = await Projects.getProjectActions(req.params.id);
         res.status(200).json(pjs);
     }
     catch(err) {
