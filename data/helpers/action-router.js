@@ -8,12 +8,14 @@ router.post('/', async (req,res) => {
     if (!req.body["project_id"] || !req.body.description || !req.body.notes) {
         res.status(400).json({error:'Please provide a project id / description / notes for this action.'});
     }
-    try {
-        const newPj = await Actions.insert(req.body);
-        res.status(201).json(newPj);
-    }
-    catch(err) {
-        res.status(500).json({error:"Failed to create resource."});
+    else {
+        try {
+            const newPj = await Actions.insert(req.body);
+            res.status(201).json(newPj);
+        }
+        catch(err) {
+            res.status(500).json({error:"Failed to create resource."});
+        }
     }
 });
 
@@ -41,17 +43,19 @@ router.put('/:id', async (req,res) => {
     if (!req.body) {
         res.status(400).json({error:'Please provide a description / notes for this action.'});
     }
-    try {
-        const newPj = await Actions.update(req.params.id,req.body);
-        if (newPj === null) {
-            res.status(404).json({error:"Cannot find action with that ID."});
+    else {
+        try {
+            const newPj = await Actions.update(req.params.id,req.body);
+            if (newPj === null) {
+                res.status(404).json({error:"Cannot find action with that ID."});
+            }
+            else {
+                res.status(201).json(newPj);
+            }
         }
-        else {
-            res.status(201).json(newPj);
+        catch(err) {
+            res.status(500).json({error:"Failed to create resource."});
         }
-    }
-    catch(err) {
-        res.status(500).json({error:"Failed to create resource."});
     }
 });
 
