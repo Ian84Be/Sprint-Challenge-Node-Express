@@ -8,12 +8,38 @@ class App extends Component {
     error:'',
     projects:[],
   };
+
   componentDidMount() {
     axios.get("http://localhost:3313/api/projects/")
       .then(res => {
-        console.log(res);
         this.setState({
           projects: res.data,
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          error: err,
+        });
+      });
+  }
+
+  getActions = e => {
+    const id = Number(e.target.id);
+    axios.get(`http://localhost:3313/api/projects/${id}/actions`)
+      .then(res => {
+        let updateIndex = this.state.projects.findIndex(el => el.id  === id);
+        let updateProject = this.state.projects[updateIndex];
+        updateProject = {
+          ...updateProject,
+          actions: res.data
+        };
+        // console.log(updateProject);
+        // console.log(this.state.projects[updateIndex]);
+        let newList = this.state.projects.slice(updateIndex+1);
+        // console.log(newList);
+        this.setState({
+          projects: [...newList, updateProject],
         });
       })
       .catch(err => {
@@ -31,7 +57,6 @@ class App extends Component {
 
       <div className="project-list">
       {this.state.projects.map(project => {
-        console.log(project);
         return (
           <div key={project.id} className="project">
           <h3>{project.name}</h3>
@@ -41,7 +66,19 @@ class App extends Component {
           ) : (
             <p>IN PROGRESS</p>
           )}
-          <p></p>
+          <button id={project.id} onClick={this.getActions}>SHOW ACTIONS</button>
+
+          {project.actions && 
+            project.actions.map(action => {
+              return (
+                <div className="project-action">
+                <p>Description: {action.description}</p>
+                <p>Notes: {action.notes}</p>
+                </div>
+              )
+            })
+          }
+
           </div>
         )
       })}
