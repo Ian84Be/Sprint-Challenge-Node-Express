@@ -26,13 +26,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+I learned about express router, and express middleware.
+
 - [ ] Describe Middleware?
+
+Middleware is a semantic name for functions that operate between user and server.
 
 - [ ] Describe a Resource?
 
+Everything is a resource. Within a computer program, these resources are usually described with nouns. These nouns are what you need to manage with your software.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+The API can return a variety of responses, usually it returns a JSON object containing information about the request.
+
 - [ ] How can we partition our application into sub-applications?
+
+As with any complex structure, our application is best managed through smaller component systems. One example would be the router component of express: it manages traffic to one specific branch of endpoints, allowing the main server to import multiple helpers to direct requests. 
 
 ## Project Setup
 
